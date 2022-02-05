@@ -1,10 +1,13 @@
 import React from 'react'
-
+import logo from '../movieslogo.png'
 function navbar() {
     return (
-        <h2>
-            I am Navbar
-        </h2>
+        <>
+          <img src={logo}>
+          </img>
+          <div>Movies</div>
+          <div>Favourites</div>
+        </>
     )
 }
 
