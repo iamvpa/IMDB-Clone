@@ -3,6 +3,7 @@ import './App.css';
 import NavBar from './components/NavBar.js';
 import Banner from './components/Banner.js';
 import Movies from './components/Movies.js'
+import Pagination from './components/Pagination.js'
 
 function App() {
   return (<>
@@ -10,6 +11,7 @@ function App() {
   <NavBar></NavBar>
   <Banner></Banner>
   <Movies></Movies>
+  <Pagination></Pagination>
   </>
     
   );
