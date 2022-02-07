@@ -1,5 +1,4 @@
 import React ,{useState,useEffect} from 'react'
-import Image from '../banner.jpg'
 import axios from 'axios'
 function Banner() {
     const [movie,setMovie]=useState({})
