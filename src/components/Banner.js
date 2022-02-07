@@ -3,8 +3,9 @@ import Image from '../banner.jpg'
 import axios from 'axios'
 function Banner() {
     const [movie,setMovie]=useState({})
+    var a=Math.floor(Math.random()*20)
     useEffect(function(){
-        axios.get("https://api.themoviedb.org/3/trending/movie/week?api_key=7602f6a7075922c7cdd8b2b2537c49ca&page=2").then((res)=>{setMovie(res.data.results[0])})
+        axios.get("https://api.themoviedb.org/3/trending/movie/week?api_key=7602f6a7075922c7cdd8b2b2537c49ca&page=1").then((res)=>{setMovie(res.data.results[a])})
     },[])
 
     return (
