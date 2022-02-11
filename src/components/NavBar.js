@@ -1,15 +1,17 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-
-export default class Navbar extends Component {
-    render() {
-        return (
-            <div style={{display:'flex',padding:'0.5'}}>
-                <Link to="/" style={{textDecoration:'none'}}><h1 style={{marginTop:'1rem',marginLeft:'1rem'}}>Movies App</h1></Link>
-                <Link to="/favourites" style={{textDecoration:'none'}}><h2 style={{marginLeft:'2rem',marginTop:'1.5rem'}}>Favourites</h2></Link>
-                
-                
-            </div>
-        )
-    }
+import React from 'react'
+import logo from '../movieslogo.png'
+import {Link} from 'react-router-dom'
+function navbar() {
+    return (
+        <>
+        <div className="border px-8 flex space-x-8 items-center">
+          <img src={logo} width="60" height="60">
+          </img>
+          <Link to="/" className="text-black-400 font-bold text-xl md:text-2xl">Movies</Link>
+          <Link to="/favourites" className="text-black-400 font-bold text-xl md:text-2xl">Favourites</Link>
+          </div>
+        </>
+    )
 }
+
+export default navbar

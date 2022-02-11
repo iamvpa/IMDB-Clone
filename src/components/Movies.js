@@ -1,146 +1,62 @@
-import React, { Component } from 'react'
-import axios from 'axios';
-
-export default class Movies extends Component {
-    constructor(){
-        super();
-        this.state={
-            hover:'',
-            parr:[1],
-            currPage:1,
-            movies:[],
-            favourites:[]
-        }
+import React,{useState,useEffect} from 'react'
+import Image from '../banner.jpg'
+import axios from 'axios'
+import {Grid} from 'react-loader-spinner'
+import Pagination from './Pagination.js'
+function Movies() {
+    const [page,setPage]=useState(1);
+    const [hover,setHover]=useState('');
+    const [favourites,setFavourites]=useState([]);
+    function goAhead(){
+        setPage(page+1);
     }
-    loadMoreMovies = async() => {
-        let newPage = this.state.currPage+1;
-        const res = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=5540e483a20e0b20354dabc2d66a31c9&language=en-US&page=${newPage}`);
-        let data = res.data
-        // console.log(data);
-        this.setState({
-            movies:[...this.state.movies,...data.results],
-            currPage:newPage
-        })
+    function goBack(){
+        if(page>1)
+        setPage(page-1);
     }
-    async componentDidMount(){
-        //Side effects 
-        const res = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=5540e483a20e0b20354dabc2d66a31c9&language=en-US&page=${this.state.currPage}`);
-        let data = res.data
-        // console.log(data);
-        this.setState({
-            movies:[...data.results]
-        })
-        let callbackfn = (entries) => {
-            if(entries[0].isIntersecting){
-                this.loadMoreMovies();
-            }
-        }
-        let loader = document.querySelector(".infinite-loader");
-        let observer = new IntersectionObserver(callbackfn,{threshold:1.0})
-        observer.observe(loader)
-    }
-    changeMovies=async()=>{
-        console.log("changemovies called");
-        console.log(this.state.currPage);
-        const res = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=5540e483a20e0b20354dabc2d66a31c9&language=en-US&page=${this.state.currPage}`);
-        let data = res.data
-        // console.log(data);
-        this.setState({
-            movies:[...data.results]
-        })
-    }
-    handleRight=()=>{
-        let temparr =[]
-        for(let i=1;i<=this.state.parr.length+1;i++){
-            temparr.push(i);
-        }
-        this.setState({
-            parr:[...temparr],
-            currPage:this.state.currPage+1
-        },this.changeMovies)
-    }
-    handleLeft=()=>{
-        if(this.state.currPage!=1){
-            this.setState({
-                currPage:this.state.currPage-1
-            },this.changeMovies)
-        }
-    }
-    handleClick=(value)=>{
-        if(value!=this.state.currPage){
-            console.log("i am called")
-            this.setState({
-                currPage:value
-            },this.changeMovies)
-        }
-    }
-    handleFavourites=(movie)=>{
-        let oldData = JSON.parse(localStorage.getItem("movies-app") || "[]")
-        if(this.state.favourites.includes(movie.id)){
-            oldData = oldData.filter((m)=>m.id!=movie.id)
-        }else{
-            oldData.push(movie)
-        }
-        localStorage.setItem("movies-app",JSON.stringify(oldData));
-        console.log(oldData);
-        this.handleFavouritesState();
-    }
-    handleFavouritesState=()=>{
-        let oldData = JSON.parse(localStorage.getItem("movies-app") || "[]")
-        let temp = oldData.map((movie)=>movie.id);
-        this.setState({
-            favourites:[...temp]
-        })
-    }
-    render() {
-        // let movie = movies.results
-        return (
-            <>
+    const [movies,setMovies]=useState([])
+    useEffect(function(){
+        axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=7602f6a7075922c7cdd8b2b2537c49ca&page=${page}`).then((res)=>{setMovies(res.data.results)})
+    },[page])
+   let add=(movie)=>{let newArray=[...favourites,movie]
+setFavourites([...newArray])}
+    return (
+        <>
+            <div className="mb-8">
+                <div className="mt-8 mb-8 text-2xl font-bold text-center">Trending Movies</div>
                 {
-                    this.state.movies.length==0?
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div> : 
-                    <div>
-                        <h3 className="text-center"><strong>Trending</strong></h3>
-                        <div className="movies-list">
-                            {
-                                this.state.movies.map((movieObj)=>(
-                                    <div className="card movies-card" onMouseEnter={()=>this.setState({hover:movieObj.id})} onMouseLeave={()=>this.setState({hover:''})}>
-                                        <img src={`https://image.tmdb.org/t/p/original${movieObj.backdrop_path}`}  alt={movieObj.title} className="card-img-top movies-img"/>
-                                        {/* <div className="card-body"> */}
-                                            <h5 className="card-title movies-title">{movieObj.original_title}</h5>
-                                            {/* <p class="card-text movies-text">{movieObj.overview}</p> */}
-                                            <div className="button-wrapper" style={{display:'flex',width:'100%',justifyContent:'center'}}>
-                                            {
-                                                this.state.hover == movieObj.id &&
-                                                <a className="btn btn-primary movies-button" onClick={()=>this.handleFavourites(movieObj)}>{this.state.favourites.includes(movieObj.id)?"Remove from favourites":"Add to favourites"}</a>
-                                            }
-                                            </div>
-                                        {/* </div> */}
-                                    </div>
-                                ))
-                            }
-                        </div>
-                        <div className="infinite-loader"style={{display:'flex',justifyContent:'center'}}>
-                            <h2>Load More Movies .........................</h2>
-                        </div>
-                        {/* <div style={{display:'flex',justifyContent:'center'}}> */}
-                        {/* <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <li class="page-item"><a class="page-link" onClick={this.handleLeft}>Previous</a></li>
+                    movies.length==0?<div className="flex justify-center"><Grid
+                    heigth="100"
+                    width="100"
+                    color='grey'
+                    ariaLabel='loading'
+                  /></div>:
+                
+                <div className="flex flex-wrap justify-center">
+                    {
+                        movies.map((movie)=>(
+
+                            <div className={`bg-[url(https://image.tmdb.org/t/p/w500/${movie.backdrop_path})] h-[25vh] w-[150px] bg-center bg-cover rounded-xl flex items-end m-4 hover:scale-110 ease-out duration-300 relative`} onMouseEnter={()=>setHover(movie.id)} onMouseLeave={()=>setHover("")}>
                                 {
-                                    this.state.parr.map((value)=>(
-                                        <li class="page-item"><a class="page-link" onClick={()=>this.handleClick(value)}>{value}</a></li>
-                                    ))
+                                        hover==movie.id && <>{!favourites.find((m)=>m.id==movie.id)?<div className='absolute top-2 right-2 p-2 bg-gray-800 text-xl rounded-xl cursor-pointer' onClick={()=>add(movie)}>😍</div>: <div className='absolute top-2 right-2 p-2 bg-gray-800 text-xl rounded-xl cursor-pointer' onClick={()=>add(movie)}>❌</div>}
+                                       
+                                        
+                                        </>
                                 }
-                                <li class="page-item"><a class="page-link" onClick={this.handleRight}>Next</a></li>
-                            </ul>
-                        </nav> */}
-                        {/* </div> */}
-                    </div>
-                }
-            </>
-        )
-    }
+                                
+                            <div className="w-full bg-gray-900 text-white  py-2 text-center rounded-b-xl opacity-70 ">{movie.title}</div>
+                            </div>
+
+                        ))
+                    }
+               
+             
+                </div>
 }
+                </div>
+            <Pagination pageProp={page} goBack={goBack} goAhead={goAhead}/>
+        </>
+    )
+}
+
+export default Movies
