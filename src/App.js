@@ -1,25 +1,28 @@
-
+import logo from './logo.svg';
+import Navbar from './Components/Navbar';
+import Banner from './Components/Banner';
+import Movies from './Components/Movies';
+import Favourite from './Components/Favourite';
+import {BrowserRouter as Router,Switch,Route, BrowserRouter} from 'react-router-dom';
 import './App.css';
-import NavBar from './components/NavBar.js';
-import Banner from './components/Banner.js';
-import Movies from './components/Movies.js'
-import Pagination from './components/Pagination.js'
-import Favourites from './components/Favourites.js'
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
-
 
 function App() {
-  return (<BrowserRouter>
- 
-  <NavBar></NavBar>
-  <Routes>
-    <Route path="/" element={<><Banner></Banner><Movies></Movies></>}></Route>
-    <Route path="/favourites" element={<Favourites></Favourites>}></Route>
-
-  </Routes>
- 
-  </BrowserRouter>
-    
+  return (
+    <Router>
+      <Navbar/>
+      <Switch>
+        <Route path='/' exact render={(props)=>(
+          <>
+            <Banner {...props}/>
+            <Movies {...props}/>
+          </>
+        )}/>
+        <Route path='/favourites' component={Favourite} />
+      </Switch>
+      {/* <Banner/> */}
+      {/* <Movies/> name="udai" */}
+      {/* <Favourite/> */}
+    </Router>
   );
 }
 

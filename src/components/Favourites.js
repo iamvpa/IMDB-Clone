@@ -51,7 +51,7 @@ function Favourites() {
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Popularity
+                      <div className='flex'><img src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-up-arrows-those-icons-lineal-those-icons-3.png" className='mr-2 cursor-pointer'/> Popularity<img src="https://img.icons8.com/external-those-icons-lineal-those-icons/24/000000/external-down-arrows-those-icons-lineal-those-icons-4.png" className='mr-2 ml-2'/></div>
                   </th>
                   <th
                     scope="col"
@@ -68,7 +68,7 @@ function Favourites() {
                  
                 </tr>
               </thead>
-            {/*  <tbody className="bg-white divide-y divide-gray-200">
+            {  <tbody className="bg-white divide-y divide-gray-200">
                 {people.map((person) => (
                   <tr key={person.email}>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -99,7 +99,7 @@ function Favourites() {
                     </td>
                   </tr>
                 ))}
-                </tbody>*/}
+                </tbody>}
             </table>
           </div>
         </div>
