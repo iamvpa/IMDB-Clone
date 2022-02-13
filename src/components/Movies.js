@@ -3,6 +3,7 @@ import Image from '../banner.jpg'
 import axios from 'axios'
 import {Grid} from 'react-loader-spinner'
 import Pagination from './Pagination.js'
+import Particles from "react-tsparticles"
 function Movies() {
     const [movies, setMovies] = useState([])
     const [hover, setHover] = useState("")

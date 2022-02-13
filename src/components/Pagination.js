@@ -1,15 +1,30 @@
 import React,{useState} from 'react';
 
-function Pagination({pageProp,goAhead,goBack}) {
+function Pagination({goBack,curPage,goForward,setCurPage}) {
   
-  return (<>
-  <div classname=" flex justify-center ">
-  <button className="p-2 border-2 border-indigo-500 text-indigo-500 border-r-0 rounded-l-xl" onClick={goBack}>Previous</button>
-  <button className="p-2 border-2 border-indigo-500 text-indigo-500 bg-gray-300   ">{pageProp}</button>
-  <button className="p-2 border-2 border-indigo-500 text-indigo-500 rounded-r-xl border-l-0    " onClick={goAhead}>Next</button>
-  </div>
-  
-  </>);
+  return <div className='m-4 flex justify-center'>
+
+        <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+            <button
+                className="relative bg-indigo-50 inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium  text-gray-500 hover:bg-gray-50 border-indigo-500 text-indigo-600"
+                onClick={goBack}
+            >
+                Previous
+            </button>
+            <button
+                aria-current="page"
+                className="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+            >
+                {curPage}
+            </button>
+            <button
+                className="relative bg-indigo-50 inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 border-indigo-500 text-indigo-600"
+                onClick={goForward}
+            >
+                Next
+            </button>
+        </nav>
+    </div>
 }
 
 export default Pagination;
