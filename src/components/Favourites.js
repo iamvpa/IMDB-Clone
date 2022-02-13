@@ -10,14 +10,13 @@ function Favourites() {
     const [search, setSearch] = useState("")
     const [rows, setRows] = useState(5)
     const [curPage, setCurPage] = useState(1)
-    // const maxPages 
-    //Movies lane ke lia
+   
     useEffect(() => {
         let oldFav = JSON.parse(localStorage.getItem("imdb")) || []
         setFavourites([...oldFav])
     }, [])
 
-    // Get all genres
+   
     useEffect(() => {
         let newGenres = favourites.map((movie => genreids[movie.genre_ids[0]]))
         let temp = new Set(newGenres)
